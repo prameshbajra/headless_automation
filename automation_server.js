@@ -44,9 +44,9 @@ let register = async () => {
 app.get("/register", (req, res, next) => {
     register().then((value) => {
         console.log(value);
-        res.send(value)
+        res.send(value);
     }).catch((e) => {
-        console.log(e)
+        console.log(e);
     });
 })
 
