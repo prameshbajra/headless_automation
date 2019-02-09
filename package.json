@@ -1,0 +1,19 @@
+{
+    "name": "headless_automation",
+    "version": "1.0.0",
+    "description": "Server Code for headless automation.",
+    "main": "automation_server.js",
+    "scripts": {
+        "start": "node automation_server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.16.4",
+        "puppeteer": "^1.12.2"
+    },
+    "engines": {
+        "node": "8.12.0"
+    }
+}
