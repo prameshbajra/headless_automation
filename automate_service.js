@@ -3,14 +3,12 @@ const express = require('express');
 const app = express();
 
 class ConnectPool {
-
-
     constructor() {
         this.availablePages = [];
         this.createPages(3);
-        this.busyPages = []
+        this.busyPages = [];
+        this.responses = [];
     }
-
 
     async createPages(number_of_pages) {
         let pages = [];
@@ -43,7 +41,7 @@ class ConnectPool {
             }, 2000)
             const result = this.register_page(this.busyPages[this.busyPages.length - 1]);
             result.then((rest) => {
-                console.log(rest);
+                this.responses.push(rest)
             })
         } else {
             setInterval(async () => {
@@ -84,10 +82,12 @@ class ConnectPool {
             "result": content_success
         };
     }
-
 }
 
+app.listen(process.env.PORT || 8090);
 
-const newCon = new ConnectPool();
-
-newCon.process()
+app.get("/register", (req, res, next) => {
+    const asyncPooling = new ConnectPool();
+    const response = asyncPooling.process();
+    return false;
+})
