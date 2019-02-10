@@ -42,6 +42,8 @@ class ConnectPool {
             const result = this.register_page(this.busyPages[this.busyPages.length - 1]);
             result.then((rest) => {
                 this.responses.push(rest)
+                console.log(rest);
+
             })
         } else {
             setInterval(async () => {
@@ -51,7 +53,11 @@ class ConnectPool {
     }
 
     async register_page(page) {
-        await page.goto('https://reg.ebay.com/reg/PartialReg');
+        await page.goto("https://www.proxysite.com/");
+        await page.$eval(await page.$('[name="d"]'),el=> el.value = "https://reg.ebay.com/reg/PartialReg")
+        const proxybtn = await page.$('[type="submit"]');
+        await proxybtn.click();
+        // await page.goto('https://reg.ebay.com/reg/PartialReg'); 
         // Fill the registration form ...
         await page.click('#firstname');
         await page.$eval('#firstname', el => el.value = "Brownel");
@@ -75,11 +81,14 @@ class ConnectPool {
 
         await page.waitForSelector("#msg2");
         const content_success = await page.evaluate(() => document.getElementById("msg2").textContent)
-
+        
         this.availablePages.push(page);
         this.busyPages.splice(page);
         return {
-            "result": content_success
+            "first name": "Brownel",
+            "last name":"Sacar",
+            "email":"Scaar_B@all.com",
+            "password":"aasdfassasdf123123",
         };
     }
 }
