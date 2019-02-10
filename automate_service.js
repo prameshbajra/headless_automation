@@ -6,23 +6,15 @@ class ConnectPool {
 
 
     constructor() {
-        // this.browser = this.makeBrowser();
         this.availablePages = [];
         this.createPages(3);
         this.busyPages = []
     }
 
-    // async makeBrowser() {
-    //     const browser = await puppeteer.launch({
-    //         headless: false,
-    //         args: ['--no-sandbox', '--disable-setuid-sandbox']
-    //     });
-    //     return browser;
-    // }
 
     async createPages(number_of_pages) {
         let pages = [];
-        let browser = await puppeteer.launch({
+        browser = await puppeteer.launch({
             headless: false,
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
@@ -31,41 +23,27 @@ class ConnectPool {
             pages.push(page);
         }
         this.availablePages = pages;
-        console.log("hello");
 
     }
 
-    async process(number_of_registrations = 10) {
-        // const availablePages = this.createPages(3)
-        // let pages = [];
-        // let browser = await puppeteer.launch({
-        //     headless: false,
-        //     args: ['--no-sandbox', '--disable-setuid-sandbox']
-        // });
-        // for (let i = 0; i < 3; i++) {
-        //     const page = await browser.newPage();
-        //     pages.push(page);
-        // }
+    async process(number_of_registrations = 6) {
         for (let i = 0; i < number_of_registrations; i++) {
             this.register();
-
         }
     }
 
-    register() {
+    async register() {
         if (this.availablePages.length > 0) {
-            console.log("inside if", this.availablePages.length);
             let page = this.availablePages.pop();
             this.busyPages.push(page);
-            // this.availablePages.splice(page)
-            console.log("after splice", this.availablePages.length);
-            // console.log("\n\n\n\n\n");
-            // console.log(busyPages[busyPages.length - 1][0])
+
             const result = this.register_page(this.busyPages[this.busyPages.length - 1]);
-            console.log(result);
+            console.log("\n\n\nRes onn the wayyyy!!\n\n\n")
+            result.then((rest) => {
+                console.log(rest);
+            })
         } else {
-            console.log("inside else", this.availablePages.length);
-            setInterval(() => {
+            setInterval(async () => {
                 this.register();
             }, 10000)
         }
@@ -97,13 +75,13 @@ class ConnectPool {
         await page.waitForSelector("#msg2");
         const content_success = await page.evaluate(() => document.getElementById("msg2").textContent)
 
-        // browser.close();
         this.availablePages.push(page);
         this.busyPages.splice(page);
         return {
             "result": content_success
         };
     }
+
 }
 
 
