@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const express = require('express');
+const credentials = require('./credentials');
 const app = express();
 
 class ConnectPool {
@@ -91,3 +92,6 @@ app.get("/register", (req, res, next) => {
     const response = asyncPooling.process();
     return false;
 })
+
+
+console.log(credentials.generateEmail()[0]);
