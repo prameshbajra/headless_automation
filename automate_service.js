@@ -14,12 +14,12 @@ class ConnectPool {
 
     async createPages(number_of_pages) {
         let pages = [];
-        browser = await puppeteer.launch({
+        this.browser = await puppeteer.launch({
             headless: false,
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
         for (let i = 0; i < number_of_pages; i++) {
-            const page = await browser.newPage();
+            const page = await this.browser.newPage();
             pages.push(page);
         }
         this.availablePages = pages;
@@ -36,9 +36,12 @@ class ConnectPool {
         if (this.availablePages.length > 0) {
             let page = this.availablePages.pop();
             this.busyPages.push(page);
-
+            setInterval(async () => {
+                const pages = await this.browser.pages();
+                pages.shift();
+                pages[Math.floor(Math.random() * pages.length)].bringToFront();
+            }, 2000)
             const result = this.register_page(this.busyPages[this.busyPages.length - 1]);
-            console.log("\n\n\nRes onn the wayyyy!!\n\n\n")
             result.then((rest) => {
                 console.log(rest);
             })
