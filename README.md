@@ -14,5 +14,5 @@
 - Headless deployment to heroku.
 
 
-### Check branch `Pramesh` too ...
+### Check branches too ...
 
